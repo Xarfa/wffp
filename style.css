@@ -158,13 +158,13 @@ form textarea { resize: vertical; min-height: 120px; }
 .contact-photo img { width: 100%; }
 .contact-links {
   margin-top: 26px;
-  font-size: var(--fs-text);
+  font-size: var(--fs-fine);
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
-.contact-links a { border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.contact-links a { border-bottom: 1px solid var(--line); padding-bottom: 6px; }
 .contact-links a:hover { color: var(--accent); }
-.contact-links .k { color: var(--mute); display: inline-block; width: 88px; }
+.contact-links .k { color: var(--mute); display: inline-block; width: 84px; }
 
 /* ---------- footer ---------- */
 .foot {
