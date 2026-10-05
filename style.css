@@ -166,6 +166,23 @@ form textarea { resize: vertical; min-height: 120px; }
 .contact-links a:hover { color: var(--accent); }
 .contact-links .k { color: var(--mute); display: inline-block; width: 84px; }
 
+/* ---------- visitor cities ---------- */
+.visitors {
+  margin-top: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.visitors svg { width: 400px; max-width: 100%; height: auto; display: block; }
+.visitors .v-cities {
+  margin-top: 12px;
+  font-size: var(--fs-fine);
+  color: var(--mute);
+  text-align: right;
+  max-width: 400px;
+  line-height: 1.7;
+}
+
 /* ---------- footer ---------- */
 .foot {
   border-top: 1px solid var(--line);
@@ -236,4 +253,6 @@ form textarea { resize: vertical; min-height: 120px; }
   .project-bar, .contact-grid { grid-template-columns: 1fr; }
   .project-bar { padding: 40px 0; }
   .contact { padding: 72px 0 120px; }
+  .visitors { align-items: flex-start; }
+  .visitors .v-cities { text-align: left; }
 }
