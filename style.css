@@ -166,9 +166,6 @@ form textarea { resize: vertical; min-height: 120px; }
 .contact-links a:hover { color: var(--accent); }
 .contact-links .k { color: var(--mute); display: inline-block; width: 84px; }
 
-.contact-map { margin-top: 44px; margin-right: 48px; display: flex; justify-content: flex-end; }
-.contact-map img { width: 400px; }
-
 /* ---------- footer ---------- */
 .foot {
   border-top: 1px solid var(--line);
