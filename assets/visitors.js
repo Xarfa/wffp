@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var API = "https://wffp-visitors.xarfa.workers.dev";
+  var API = "https://wffp-visitors.pages.dev";
 
   /* ---- land grid ---- */
   var COLS = 96, ROWS = 40, PITCH = 7, OX = 0, OY = 6;
@@ -128,7 +128,7 @@
       if (!cell) return;
       var k = cell[0] + "," + cell[1];
       if (!byCell[k]) byCell[k] = { c: cell[0], r: cell[1], names: [] };
-      byCell[k].names.push(v.city + (v.country ? ", " + v.country : ""));
+      byCell[k].names.push(v.city + (v.country ? ", " + countryLabel(v.country) : ""));
       named.push(v.city);
     });
     Object.keys(byCell).forEach(function (k) {
@@ -155,6 +155,12 @@
   }
 
   /* ---- data ---- */
+  // 港澳台按中国口径显示，避免悬停提示里出现单列的国家代码
+  var COUNTRY_FIX = { TW: "China", HK: "China", MO: "China" };
+  function countryLabel(cc) {
+    return COUNTRY_FIX[cc] || cc;
+  }
+
   function getCities(tries) {
     var n = tries || 0;
     return fetch(API + "/cities")
