@@ -180,6 +180,7 @@
 
   function start() {
     if (location.protocol === "file:") return;
+    render([]); // 灰色底图纯本地数据，先画出来；橙点等数据到了再补
     getCities().then(render).catch(function () {});
     ping();
   }
