@@ -155,19 +155,25 @@
   }
 
   /* ---- data ---- */
-  function getCities() {
+  function getCities(tries) {
+    var n = tries || 0;
     return fetch(API + "/cities")
       .then(function (r) { return r.json(); })
-      .then(function (d) { return d.cities || []; });
+      .then(function (d) { return d.cities || []; })
+      .catch(function (e) {
+        if (n < 1) {
+          return new Promise(function (res) { setTimeout(res, 1500); }).then(function () { return getCities(n + 1); });
+        }
+        throw e;
+      });
   }
 
   function ping() {
     try {
-      if (sessionStorage.getItem("wffp-vc") || navigator.webdriver) return;
-      sessionStorage.setItem("wffp-vc", "1");
+      if (navigator.webdriver) return;
       fetch(API + "/ping", { method: "POST", keepalive: true })
-        .then(getCities)
-        .then(render)
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d && d.cities) render(d.cities); })
         .catch(function () {});
     } catch (e) {}
   }
