@@ -110,10 +110,10 @@ function render() {
       body.appendChild(el(`<p class="about-bio reveal">${a.bio}</p>`));
       body.appendChild(el(`<div class="about-block reveal"><h3>Volunteering</h3>
         <ul class="about-vol">${a.volunteering.map((v) =>
-          `<li>${v.icon ? `<img class="vlogo" src="${v.icon}" alt="" loading="lazy">` : ""}<span>${v.text}</span></li>`).join("")}</ul></div>`));
+          `<li>${v.icon ? `<img class="vlogo decoding" data-file="${v.icon}" alt="">` : ""}<span>${v.text}</span></li>`).join("")}</ul></div>`));
       body.appendChild(el(`<div class="about-block reveal"><h3>Software</h3>
         <ul class="about-sw">${a.software.map((v) =>
-          `<li><img class="sico" src="${v.icon}" alt="" loading="lazy"><span>${v.text}</span></li>`).join("")}</ul></div>`));
+          `<li><img class="sico decoding" data-file="${v.icon}" alt=""><span>${v.text}</span></li>`).join("")}</ul></div>`));
       body.appendChild(el(`<div class="about-block reveal"><h3>Selected awards</h3>
         <ul class="about-aw">${a.awards.map((v) => `<li>${v}</li>`).join("")}</ul>
         <a class="btn-awards" href="#awards">${a.cta} ↓</a></div>`));
