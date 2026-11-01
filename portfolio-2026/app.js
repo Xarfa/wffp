@@ -151,7 +151,7 @@ function render() {
     <a href="mailto:${f.email}"><span class="k">Email</span>${f.email}</a>
     <a href="${f.github}" target="_blank" rel="noopener"><span class="k">GitHub</span>@Xarfa</a>
     <a href="${f.rednote}" target="_blank" rel="noopener"><span class="k">RedNote</span>改造我们的学习</a>`;
-  $("footNote").textContent = f.note;
+  $("footNote").innerHTML = `${f.note} · <a class="to-top" href="#top">Back to top ↑</a>`;
 
   // collect images — observe the .plate box (has real size pre-decrypt);
   // small icons (no plate) are observed directly via their fixed CSS size
@@ -165,28 +165,48 @@ function render() {
 }
 
 /* ---------- lightbox ---------- */
-let lbEl = null;
+let lbEl = null, lbIndex = -1;
+function figureRegs() { return imgRegistry.filter((r) => r.plate !== r.img); }
 function buildLightbox() {
   const lb = el(`<div class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
     <button class="lb-close" aria-label="Close">✕</button>
+    <button class="lb-nav lb-prev" aria-label="Previous">←</button>
+    <button class="lb-nav lb-next" aria-label="Next">→</button>
     <figure class="lb-fig"><div class="lb-plate"><img alt=""></div><figcaption class="lb-cap"></figcaption></figure>
   </div>`);
   document.body.appendChild(lb);
   lb.addEventListener("click", (e) => {
     if (e.target === lb || e.target.closest(".lb-close")) closeLightbox();
+    else if (e.target.closest(".lb-prev")) stepLightbox(-1);
+    else if (e.target.closest(".lb-next")) stepLightbox(1);
   });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+  document.addEventListener("keydown", (e) => {
+    if (!lbEl || !lbEl.classList.contains("open")) return;
+    if (e.key === "Escape") closeLightbox();
+    else if (e.key === "ArrowLeft") stepLightbox(-1);
+    else if (e.key === "ArrowRight") stepLightbox(1);
+  });
   return lb;
+}
+function showLightboxIndex(i) {
+  const regs = figureRegs();
+  if (!regs.length) return;
+  lbIndex = ((i % regs.length) + regs.length) % regs.length;
+  const reg = regs[lbIndex];
+  if (!reg.img.src || !reg.img.src.startsWith("blob:")) decryptImage(reg); // ensure ready
+  const img = lbEl.querySelector("img");
+  img.src = reg.img.src;
+  const fig = reg.img.closest(".fig");
+  lbEl.querySelector(".lb-cap").textContent = fig ? (fig.querySelector(".cap")?.textContent || "") : "";
 }
 function openLightbox(reg) {
   if (!reg.img.src || !reg.img.src.startsWith("blob:")) return; // not decrypted yet
   if (!lbEl) lbEl = buildLightbox();
-  lbEl.querySelector("img").src = reg.img.src;
-  const fig = reg.img.closest(".fig");
-  lbEl.querySelector(".lb-cap").textContent = fig ? (fig.querySelector(".cap")?.textContent || "") : "";
+  showLightboxIndex(figureRegs().indexOf(reg));
   lbEl.classList.add("open");
   document.body.style.overflow = "hidden";
 }
+function stepLightbox(dir) { showLightboxIndex(lbIndex + dir); }
 function closeLightbox() {
   if (!lbEl || !lbEl.classList.contains("open")) return;
   lbEl.classList.remove("open");
@@ -197,12 +217,24 @@ function closeLightbox() {
    — observer callbacks starve when the tab is hidden) ---------- */
 function watchReveals() {
   const nodes = Array.from(document.querySelectorAll(".reveal"));
+  const navLinks = Array.from(document.querySelectorAll(".nav a"));
+  const secs = navLinks.map((a) => document.getElementById(a.getAttribute("href").slice(1)));
+  const topBar = document.querySelector(".top");
+  const progress = $("progress");
   let last = 0;
   const check = (force) => {
     const now = Date.now();
     if (!force && now - last < 140) return;
     last = now;
     const vh = window.innerHeight;
+    const y = window.scrollY;
+    // progress bar + header state + scrollspy
+    if (progress) progress.style.width = Math.min(100, (y / Math.max(1, document.body.scrollHeight - vh)) * 100) + "%";
+    if (topBar) topBar.classList.toggle("scrolled", y > 40);
+    let current = -1;
+    secs.forEach((sec, i) => { if (sec && sec.offsetTop - 140 <= y) current = i; });
+    navLinks.forEach((a, i) => a.classList.toggle("active", i === current));
+    // reveals + lazy decrypt
     for (const n of nodes) {
       if (n.classList.contains("in")) continue;
       const r = n.getBoundingClientRect();
