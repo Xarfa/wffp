@@ -8,12 +8,10 @@ const b64toBytes = (b) => Uint8Array.from(atob(b), (c) => c.charCodeAt(0));
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
-// cache-bust every fetch with the build stamp carried by app.js?v=…
-const ASSET_V = (() => {
-  const s = document.querySelector('script[src*="app.js"]');
-  try { return new URL(s.src).searchParams.get("v") || "0"; } catch (_) { return "0"; }
-})();
-const bust = (url) => url + (url.includes("?") ? "&" : "?") + "v=" + ASSET_V;
+// manifest name is stamped into <body data-manifest="…"> by the build;
+// asset filenames are content-addressed (hash of ciphertext) so the CDN can
+// never serve a stale version under a name the manifest references.
+const MANIFEST_URL = document.body.dataset.manifest || "manifest.json";
 
 let MANIFEST = null;
 let CONTENT = null;
@@ -31,7 +29,7 @@ async function gcmDecrypt(key, ivB64, data) {
   const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64toBytes(ivB64) }, key, data);
   return new Uint8Array(pt);
 }
-const fetchBytes = (url) => fetch(bust(url)).then((r) => {
+const fetchBytes = (url) => fetch(url).then((r) => {
   if (!r.ok) throw new Error("fetch " + url + " -> " + r.status);
   return r.arrayBuffer();
 });
@@ -328,7 +326,7 @@ async function onSubmit(ev) {
 /* ---------- init ---------- */
 (async function init() {
   try {
-    MANIFEST = await fetch(bust("manifest.json")).then((r) => r.json());
+    MANIFEST = await fetch(MANIFEST_URL).then((r) => r.json());
   } catch (err) {
     $("gateError").textContent = "Failed to load manifest.json — open this page over http(s).";
     return;
