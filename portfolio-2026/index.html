@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio 2026 — Rattry Wu</title>
+<meta name="description" content="Private portfolio of Rattry Wu — graphic design, industrial design and scientific visualization. Password required.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ======= PASSWORD GATE ======= -->
+<div class="gate" id="gate">
+  <div class="gate-bg" aria-hidden="true"></div>
+  <div class="gate-card" id="gateCard">
+    <p class="gate-kicker">Private portfolio</p>
+    <h1 class="gate-title">Portfolio&nbsp;2026<span class="dot">.</span></h1>
+    <p class="gate-sub">Enter the password to view the works.</p>
+    <form class="gate-form" id="gateForm" autocomplete="off">
+      <div class="gate-row">
+        <input id="pw" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required>
+        <button type="submit" id="pwBtn">Enter</button>
+      </div>
+      <p class="gate-error" id="gateError" role="alert"></p>
+    </form>
+    <p class="gate-foot">Media is AES-256 encrypted and unlocked in your browser.</p>
+  </div>
+</div>
+
+<!-- ======= SITE (rendered after unlock) ======= -->
+<main id="site" class="site" hidden>
+  <header class="top" id="top">
+    <a class="wordmark" href="#top">Rattry Wu</a>
+    <nav class="nav" id="nav"></nav>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="hero-name" id="heroName"></h1>
+    </div>
+  </section>
+
+  <div id="sections"></div>
+
+  <footer class="foot" id="foot">
+    <div class="wrap">
+      <p class="label">Contact</p>
+      <div class="foot-grid">
+        <div class="foot-big">say hello<span class="dot">.</span></div>
+        <div class="foot-links" id="footLinks"></div>
+      </div>
+      <p class="foot-note" id="footNote"></p>
+    </div>
+  </footer>
+</main>
+
+<script src="app.js" defer></script>
+<noscript><p style="padding:2rem;font-family:sans-serif">This portfolio requires JavaScript to decrypt its content locally.</p></noscript>
+</body>
+</html>
