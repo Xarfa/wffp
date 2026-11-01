@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio 2026 — Rattry Wu</title>
+<meta name="description" content="Private portfolio of Rattry Wu — graphic design, industrial design and scientific visualization. Password required.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body  data-manifest="manifest.e73f9909d8.json">
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ======= PASSWORD GATE ======= -->
+<div class="gate" id="gate">
+  <div class="gate-bg" aria-hidden="true"></div>
+  <div class="gate-card" id="gateCard">
+    <h1 class="gate-title">Portfolio&nbsp;2026<span class="dot">.</span></h1>
+    <form class="gate-form" id="gateForm" autocomplete="off">
+      <div class="gate-row">
+        <input id="pw" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required>
+        <button type="submit" id="pwBtn">Enter</button>
+      </div>
+      <p class="gate-error" id="gateError" role="alert"></p>
+    </form>
+    <p class="gate-foot">Media is AES-256 encrypted and unlocked in your browser.</p>
+  </div>
+</div>
+
+<!-- ======= SITE (rendered after unlock) ======= -->
+<main id="site" class="site" hidden>
+  <header class="top" id="top">
+    <a class="wordmark" href="../">Rattry Wu</a>
+    <nav class="nav" id="nav"></nav>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="hero-name" id="heroName"></h1>
+      <p class="hero-sub">Graphic design &amp; industrial design portfolio</p>
+    </div>
+  </section>
+
+  <div id="sections"></div>
+
+  <footer class="foot" id="foot">
+    <div class="wrap">
+      <p class="label">Contact</p>
+      <div class="foot-grid">
+        <div class="foot-big">say hello<span class="dot">.</span></div>
+        <div class="foot-links" id="footLinks"></div>
+      </div>
+      <p class="foot-note" id="footNote"></p>
+    </div>
+  </footer>
+</main>
+
+<script src="app.js" defer></script>
+<noscript><p style="padding:2rem;font-family:sans-serif">This portfolio requires JavaScript to decrypt its content locally.</p></noscript>
+<script type="application/json" id="manifest-data">{"v": 1, "kdf": {"name": "PBKDF2", "hash": "SHA-256", "iters": 600000, "salt": "cG9ydGZvbGlvLTIwMjYtdjE="}, "verifier": {"iv": "1a06BrxJc5BGD8/8", "ct": "ovrPUnbGIrSbgQGlkhUnK39KKvDg4VnXz9psVJ96c1e5"}, "ck": {"iv": "0rXYxDhmhS+nWZKw", "ct": "jr0xhi0sSeaXIadOneCa5x0IPabb/V7CelIhlAM5D6FzHMaQPZNmZxx+XwKnkvxp"}, "files": {"academic-poster.5a303e7fe1.bin": {"iv": "hdnDz9Jm+bv0rLCW", "size": 532338}, "aw-3dds-2nd-camera.588dd19adf.bin": {"iv": "MmFC+gWe13YANqQi", "size": 63994}, "aw-3dds-2nd-mushroom.e6bb9eeaa9.bin": {"iv": "v3FCt6SPf1ERn02A", "size": 63284}, "aw-academy-3rd.605b48f568.bin": {"iv": "Lq/CKlkwwBvPLNXP", "size": 74146}, "aw-asce-1st.92563bd5f7.bin": {"iv": "TWN3H0oCg0nD3zoT", "size": 111650}, "aw-ayra-2nd.a7e8f6f54c.bin": {"iv": "y3xDDLq2TtIVXWwb", "size": 106540}, "aw-bauhaus-silver.311540bcdf.bin": {"iv": "v+iHpwH+QQSatDey", "size": 74638}, "aw-ckidea-merit.42569f4523.bin": {"iv": "zCmIL6tF+dd8Urrs", "size": 80338}, "aw-csda-bronze.19aec48b57.bin": {"iv": "ZlG2U8AkNdX5RVu5", "size": 82484}, "aw-csda-silver.890135b961.bin": {"iv": "H6oi7T71ghvJ3bPb", "size": 79993}, "aw-dadx-bronze.75965260e2.bin": {"iv": "yquENJ1u1xwe3Nop", "size": 74776}, "aw-dadx-silver.fb83ec76b1.bin": {"iv": "BLPZEiwox0iOPj/2", "size": 74176}, "aw-ecda-silver.0de4e5bdaa.bin": {"iv": "feB/7nRSZ4nVcrrR", "size": 135987}, "aw-epacc-silver.1403563499.bin": {"iv": "Y9r+NzvsHbartNDo", "size": 120559}, "aw-gcross-bronze.bfc3512238.bin": {"iv": "kRmYMuS4Z9ZZBdfw", "size": 145615}, "aw-hkcda-bronze-cam.dcd0125a06.bin": {"iv": "YvlJIyLWY5xBGLOS", "size": 76083}, "aw-hkcda-bronze-pen.7a63ac059d.bin": {"iv": "EYMgHzbl6/WIf4Wt", "size": 78144}, "aw-huashang-gold.9eeae7f699.bin": {"iv": "GiJSlmjig+GfIL83", "size": 163975}, "aw-huaxia-silver.03e18d05f3.bin": {"iv": "2kH7PdZcHNHTjXoa", "size": 145558}, "aw-jiangxi-3rd.367470a5dd.bin": {"iv": "//F/SG6RLvVh97nY", "size": 90739}, "aw-macao-bronze-band.71d891ed8b.bin": {"iv": "As6RIl9QwnPhypXT", "size": 64692}, "aw-macao-bronze-cam.5692982c05.bin": {"iv": "/UEY/d3/8uAcGSST", "size": 63392}, "aw-macao-merit.0c1638aaea.bin": {"iv": "mPZlinvTTLB2iPyr", "size": 57904}, "aw-ncda-1st.1867c02b64.bin": {"iv": "VPBMG+QY6llS/cUr", "size": 82186}, "aw-oda-1st.767119d212.bin": {"iv": "tBHp+J4wvMk4yGSO", "size": 98087}, "aw-sgadc-gold.b2fe960975.bin": {"iv": "w39ysYJeqEW1OQW8", "size": 83453}, "aw-terra-impact.1e14674ff8.bin": {"iv": "my2MiMIev4nq1teg", "size": 66492}, "aw-uad-2nd.308cd5d3ca.bin": {"iv": "8POqWTfVd/WxFaoA", "size": 88749}, "aw-ukda-2nd.756b940cd0.bin": {"iv": "u+WgESQ3o8HDM568", "size": 77680}, "aw-ukda-nom.61de7b96b0.bin": {"iv": "CxjhIFAZM7CxWJxy", "size": 83631}, "aw-ukiad-bronze.715627d70a.bin": {"iv": "lMn6lFmq4j2h6unB", "size": 99349}, "aw-wandong-3rd.69909aab93.bin": {"iv": "eWFY3TNTZGIFvtjk", "size": 101875}, "aw-ziyi-2nd.fd004315f6.bin": {"iv": "ykQw1DGAAOpZfoU3", "size": 139482}, "band-board-1.1f686e798d.bin": {"iv": "YHbeOM4E3H6Igwxy", "size": 449712}, "band-board-2.033d94da02.bin": {"iv": "jAYVe89qqyYpDlRX", "size": 360300}, "band-board-3.cb30875d6f.bin": {"iv": "nIEknoj494nWxyen", "size": 345700}, "ico-autocad.785ba20363.bin": {"iv": "dieqqRkpJW6LU00L", "size": 1359}, "ico-codex.a935e3851e.bin": {"iv": "s4rhfjuQbFpRy9Yh", "size": 10985}, "ico-comfyui.b847fba916.bin": {"iv": "GvrvSImaSpDKSILH", "size": 1227}, "ico-excel.5d9d8f5847.bin": {"iv": "cfQ1Ore3fusVnhCI", "size": 3346}, "ico-fusion.24f2bb99a4.bin": {"iv": "y9CFC5My7J0SZqXC", "size": 2428}, "ico-illustrator.5c8912c9ab.bin": {"iv": "JwK8oht0Lb7VBQHG", "size": 2378}, "ico-keyshot.c72d0bb832.bin": {"iv": "IrcN2WXJnKtKf78w", "size": 11895}, "ico-lightroom.2cbb3cd605.bin": {"iv": "2wWSjLjRJUNbuUXY", "size": 2177}, "ico-powerpoint.cc3dea8669.bin": {"iv": "xGb7oQQ8yLPV24q5", "size": 4173}, "ico-word.dbd6297720.bin": {"iv": "68N0ICLI9jHtEqoz", "size": 3617}, "logo-fao.ac47ae6656.bin": {"iv": "trz/I/aBo3W9Z9ww", "size": 11028}, "logo-mysynergy.291f165737.bin": {"iv": "6p8a7D7BmWpDgWGi", "size": 7788}, "logo-photoclub.0abbaac2e8.bin": {"iv": "WqF7RckUJBKonfFU", "size": 43632}, "logo-tedx.6553e07e9b.bin": {"iv": "PlEdBqUaHk6B//G4", "size": 692}, "logo-tedxnanjing.4934c39c65.bin": {"iv": "AuZqAXfxPLZMb8hD", "size": 40065}, "pen-board-if.c0bd03ea3a.bin": {"iv": "TItMEKfny/MG38xM", "size": 375645}, "pen-poster-contour.19d4f561a3.bin": {"iv": "RSNYfy+5vLHG/DfL", "size": 170793}, "pen-poster-hand.77393f5c04.bin": {"iv": "DZPOvBO7bcGS5QnP", "size": 396236}, "pen-poster-rain.fe852ec9ca.bin": {"iv": "fYgwbqx02UjM9OIz", "size": 476952}, "pen-posters-street.7c2973094b.bin": {"iv": "qROsa2AJoPDrn8yR", "size": 289050}, "poster-camera-share.3e4ba531be.bin": {"iv": "LijB2zx5GBr3kjfh", "size": 335410}, "poster-collage.e5c5be1d22.bin": {"iv": "TelXmdI/qpd7I19A", "size": 408461}, "poster-exhibition.1e9835499b.bin": {"iv": "eTTlEk7aM/pwZnfF", "size": 354844}, "poster-guide.ba5bd24fd8.bin": {"iv": "vgGo3kf3MfewYE+F", "size": 305419}, "poster-recruit.5aac5d954b.bin": {"iv": "Dw8BJCheI095mG5w", "size": 363818}, "poster-zine.53f51b231e.bin": {"iv": "l8Q893Hdqv38ZLG/", "size": 243408}, "practice-design.74f91c22e3.bin": {"iv": "JXGNlxUtpXsJyZp7", "size": 334423}, "practice-volunteer.22c0d55017.bin": {"iv": "xi/Nml6wyzhTKsBy", "size": 425928}, "content.fade166e30.bin": {"iv": "V2z7L+7WR0ht7b5u", "size": 14534}}}</script>
+</body>
+</html>

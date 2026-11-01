@@ -326,9 +326,16 @@ async function onSubmit(ev) {
 /* ---------- init ---------- */
 (async function init() {
   try {
-    MANIFEST = await fetch(MANIFEST_URL).then((r) => r.json());
+    // three generations of index.html exist in the wild — support them all:
+    // inline manifest (current) -> data-manifest attr -> fetch("manifest.json")
+    const inline = document.getElementById("manifest-data");
+    if (inline) MANIFEST = JSON.parse(inline.textContent);
+    else {
+      const url = document.body.dataset.manifest || "manifest.json";
+      MANIFEST = await fetch(url).then((r) => { if (!r.ok) throw 0; return r.json(); });
+    }
   } catch (err) {
-    $("gateError").textContent = "Failed to load manifest.json — open this page over http(s).";
+    $("gateError").textContent = "Failed to load the manifest — hold Ctrl and press F5 once.";
     return;
   }
   $("gateForm").addEventListener("submit", onSubmit);
