@@ -138,9 +138,22 @@ function render() {
         fig.querySelector(".plate").style.transitionDelay = `${(i % 3) * 90}ms`;
         body.appendChild(fig);
       });
-    } else { // lead / stack
+    } else { // lead / stack — consecutive "half" figures pair up on one row
       body.className = "";
-      s.figures.forEach((f) => body.insertAdjacentHTML("beforeend", figHTML(f, "reveal")));
+      let halfBuf = [];
+      const flushHalf = () => {
+        if (!halfBuf.length) return;
+        const row = el(`<div class="half-row"></div>`);
+        halfBuf.forEach((f) => row.insertAdjacentHTML("beforeend", figHTML(f, "reveal")));
+        body.appendChild(row);
+        halfBuf = [];
+      };
+      for (const f of s.figures) {
+        if (f.size === "half") { halfBuf.push(f); continue; }
+        flushHalf();
+        body.insertAdjacentHTML("beforeend", figHTML(f, "reveal"));
+      }
+      flushHalf();
     }
     host.appendChild(sec);
   }

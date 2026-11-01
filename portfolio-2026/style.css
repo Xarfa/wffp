@@ -122,6 +122,12 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* lead layout — one big figure, full width */
 
+/* half-row: two boards side by side */
+.half-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.5vw, 30px); }
+.half-row .fig { margin-top: 0; }
+.half-row .portrait .plate { max-width: 100%; }
+@media (max-width: 860px) { .half-row { grid-template-columns: 1fr; } }
+
 /* stack layout — full-width boards */
 
 /* grid layout — posters, asymmetric */
@@ -191,9 +197,7 @@ img { display: block; max-width: 100%; height: auto; }
 .about-block li { font-size: 19px; line-height: 1.55; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .about-vol li { display: flex; gap: 18px; align-items: center; }
 .vlogo { width: 48px; height: 48px; object-fit: contain; border: 1px solid var(--line); border-radius: 12px;
-  background: #fff; padding: 5px; flex: none; filter: grayscale(1); opacity: .8;
-  transition: filter .4s ease, opacity .4s ease; }
-.about-vol li:hover .vlogo { filter: none; opacity: 1; }
+  background: #fff; padding: 5px; flex: none; }
 .about-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); column-gap: 32px; }
 .about-sw li { display: flex; gap: 14px; align-items: center; padding: 12px 0; }
 .sico { width: 26px; height: 26px; object-fit: contain; flex: none; }
