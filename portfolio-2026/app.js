@@ -92,8 +92,8 @@ function render() {
     .map((s) => `<a href="#${s.id}">${s.num} ${s.short || s.title.split("—")[0].trim()}</a>`).join("");
 
   // hero
-  $("heroName").innerHTML = CONTENT.hero.name.split(" ")
-    .map((w) => `<span class="ln"><span>${w}</span></span>`).join("");
+  $("heroName").innerHTML = CONTENT.hero.lines
+    .map((line) => `<span class="ln"><span>${line}</span></span>`).join("");
 
   // sections
   const host = $("sections");

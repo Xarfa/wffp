@@ -12,7 +12,7 @@
   --radius-sm: 12px;
   --max: 1200px;
   --pad: clamp(20px, 4vw, 48px);
-  --fs-display: clamp(52px, 9vw, 118px);
+  --fs-display: clamp(44px, 9vw, 118px);
   --fs-h2: clamp(30px, 4.2vw, 54px);
   --fs-text: 18px;
   --fs-fine: 13px;
