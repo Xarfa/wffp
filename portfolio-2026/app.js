@@ -153,12 +153,13 @@ function render() {
     <a href="${f.rednote}" target="_blank" rel="noopener"><span class="k">RedNote</span>改造我们的学习</a>`;
   $("footNote").textContent = f.note;
 
-  // collect images — observe the .plate box (has real size pre-decrypt)
+  // collect images — observe the .plate box (has real size pre-decrypt);
+  // small icons (no plate) are observed directly via their fixed CSS size
   document.querySelectorAll("img[data-file]").forEach((img) => {
     const file = img.dataset.file;                       // assets/<name>.bin
     const meta = MANIFEST.files[file.split("/").pop()];  // keyed by .bin name
-    const reg = { img, plate: img.closest(".plate"), file, iv: meta.iv };
-    img.addEventListener("click", () => openLightbox(reg));
+    const reg = { img, plate: img.closest(".plate") || img, file, iv: meta.iv };
+    if (reg.plate !== img) img.addEventListener("click", () => openLightbox(reg)); // figures only
     imgRegistry.push(reg);
   });
 }
