@@ -8,6 +8,13 @@ const b64toBytes = (b) => Uint8Array.from(atob(b), (c) => c.charCodeAt(0));
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
+// cache-bust every fetch with the build stamp carried by app.js?v=…
+const ASSET_V = (() => {
+  const s = document.querySelector('script[src*="app.js"]');
+  try { return new URL(s.src).searchParams.get("v") || "0"; } catch (_) { return "0"; }
+})();
+const bust = (url) => url + (url.includes("?") ? "&" : "?") + "v=" + ASSET_V;
+
 let MANIFEST = null;
 let CONTENT = null;
 let contentKey = null;      // CryptoKey (AES-GCM)
@@ -24,7 +31,7 @@ async function gcmDecrypt(key, ivB64, data) {
   const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64toBytes(ivB64) }, key, data);
   return new Uint8Array(pt);
 }
-const fetchBytes = (url) => fetch(url).then((r) => {
+const fetchBytes = (url) => fetch(bust(url)).then((r) => {
   if (!r.ok) throw new Error("fetch " + url + " -> " + r.status);
   return r.arrayBuffer();
 });
@@ -255,13 +262,17 @@ async function onSubmit(ev) {
   if (!pw) return;
   const btn = $("pwBtn");
   btn.disabled = true; btn.textContent = "Unlocking";
+  let unlocked = false;
   try {
     await unlock(pw);
+    unlocked = true;
     await enterSite();
   } catch (err) {
     failed += 1;
     if (failed >= 5) { lockedUntil = Date.now() + 30_000; failed = 0; }
-    gateFail(failed >= 4 ? "Wrong password." : "Wrong password — check the invite and try again.");
+    gateFail(unlocked
+      ? "Content mismatch — a cached old build was served. Hold Ctrl and press F5 once, then enter again."
+      : (failed >= 4 ? "Wrong password." : "Wrong password — check the invite and try again."));
     $("pw").select();
   } finally {
     btn.disabled = false; btn.textContent = "Enter";
@@ -271,7 +282,7 @@ async function onSubmit(ev) {
 /* ---------- init ---------- */
 (async function init() {
   try {
-    MANIFEST = await fetch("manifest.json").then((r) => r.json());
+    MANIFEST = await fetch(bust("manifest.json")).then((r) => r.json());
   } catch (err) {
     $("gateError").textContent = "Failed to load manifest.json — open this page over http(s).";
     return;
