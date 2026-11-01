@@ -29,10 +29,16 @@ async function gcmDecrypt(key, ivB64, data) {
   const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64toBytes(ivB64) }, key, data);
   return new Uint8Array(pt);
 }
-const fetchBytes = (url) => fetch(url).then((r) => {
-  if (!r.ok) throw new Error("fetch " + url + " -> " + r.status);
-  return r.arrayBuffer();
-});
+// all ciphertext lives in window.P2026 (data.<hash>.js) — zero network fetches
+function payloadBytes(name) {
+  const rec = (window.P2026 && window.P2026.files && window.P2026.files[name]) || null;
+  if (!rec) throw new Error("missing asset " + name);
+  const bin = atob(rec.b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+const fetchBytes = (url) => Promise.resolve(payloadBytes(url.split("/").pop()).buffer);
 
 /* ---------- gate ---------- */
 async function unlock(pw) {
@@ -60,9 +66,9 @@ async function bootFromSession() {
 }
 
 async function loadContent() {
-  const info = MANIFEST.files["content.bin"];
-  const ct = await fetchBytes("assets/content.bin");
-  const pt = await gcmDecrypt(contentKey, info.iv, ct);
+  const cname = Object.keys(MANIFEST.files).find((f) => f.startsWith("content."));
+  const info = MANIFEST.files[cname];
+  const pt = await gcmDecrypt(contentKey, info.iv, payloadBytes(cname).buffer);
   CONTENT = JSON.parse(dec.decode(pt));
 }
 
@@ -312,6 +318,7 @@ async function onSubmit(ev) {
     unlocked = true;
     await enterSite();
   } catch (err) {
+    window.__err = String(err) + " | " + String((err && err.stack) || "");
     failed += 1;
     if (failed >= 5) { lockedUntil = Date.now() + 30_000; failed = 0; }
     gateFail(unlocked
@@ -326,14 +333,9 @@ async function onSubmit(ev) {
 /* ---------- init ---------- */
 (async function init() {
   try {
-    // three generations of index.html exist in the wild — support them all:
-    // inline manifest (current) -> data-manifest attr -> fetch("manifest.json")
-    const inline = document.getElementById("manifest-data");
-    if (inline) MANIFEST = JSON.parse(inline.textContent);
-    else {
-      const url = document.body.dataset.manifest || "manifest.json";
-      MANIFEST = await fetch(url).then((r) => { if (!r.ok) throw 0; return r.json(); });
-    }
+    // the whole payload (manifest + ciphertexts) rides in data.<hash>.js
+    MANIFEST = window.P2026 && window.P2026.manifest;
+    if (!MANIFEST) throw 0;
   } catch (err) {
     $("gateError").textContent = "Failed to load the manifest — hold Ctrl and press F5 once.";
     return;

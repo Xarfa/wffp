@@ -7,9 +7,229 @@
 <meta name="description" content="Private portfolio of Rattry Wu — graphic design, industrial design and scientific visualization. Password required.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<style>/* portfolio-2026 — Rattry Wu. hand-built, no framework.
+   swiss editorial · UN blue accent · three type sizes + mono meta. */
+
+:root {
+  --paper: #ffffff;
+  --ink: #131312;
+  --mute: #6d6d66;
+  --line: #e5e3dc;
+  --blue: #009edb;      /* UN sky blue */
+  --blue-deep: #0083c1;
+  --radius: 20px;       /* soft corners everywhere */
+  --radius-sm: 12px;
+  --max: 1200px;
+  --pad: clamp(20px, 4vw, 48px);
+  --fs-display: clamp(44px, 9vw, 118px);
+  --fs-h2: clamp(30px, 4.2vw, 54px);
+  --fs-text: 18px;
+  --fs-fine: 13px;
+  --mono: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+::selection { background: rgba(0, 127, 196, .18); }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+  font-size: var(--fs-text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; height: auto; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+.dot { color: var(--blue); }
+.label { font-family: var(--mono); font-size: var(--fs-fine); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+
+/* ================= GATE ================= */
+.gate { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px;
+  transition: opacity .7s ease, visibility .7s; }
+.gate.open { opacity: 0; visibility: hidden; pointer-events: none; }
+.gate-bg { position: absolute; inset: 0; background: var(--paper); }
+.gate-bg::before { content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0,127,196,.16) 1px, transparent 0);
+  background-size: 26px 26px; mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, black 30%, transparent 78%); }
+.gate-bg::after { content: ""; position: absolute; width: min(52vw, 520px); aspect-ratio: 1; left: 50%; top: 42%;
+  transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,127,196,.14), rgba(0,127,196,0) 68%); filter: blur(4px); }
+.gate-card { position: relative; width: min(480px, 100%); background: rgba(255,255,255,.85);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 44px 40px 30px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px -30px rgba(19,19,18,.25); }
+.gate-kicker { font-family: var(--mono); font-size: var(--fs-fine); letter-spacing: .18em; text-transform: uppercase; color: var(--blue-deep); margin-bottom: 14px; }
+.gate-title { font-size: clamp(34px, 5vw, 44px); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; margin-bottom: 24px; }
+.gate-sub { color: var(--mute); font-size: 15px; margin: 14px 0 26px; }
+.gate-row { display: flex; gap: 10px; }
+.gate-row input { flex: 1; font: inherit; padding: 13px 16px; border: 1px solid var(--line); background: #fff; border-radius: var(--radius-sm); outline: none; }
+.gate-row input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,127,196,.12); }
+.gate-row button { font: inherit; font-weight: 600; padding: 13px 22px; background: var(--ink); color: var(--paper); border: 0; border-radius: var(--radius-sm); cursor: pointer; transition: background .2s; }
+.gate-row button:hover { background: var(--blue-deep); }
+.gate-row button[disabled] { opacity: .55; cursor: wait; }
+.gate-error { min-height: 20px; font-size: var(--fs-fine); color: #b3341f; margin-top: 10px; }
+.gate-foot { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.gate-card.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-7px);} 40%, 80% { transform: translateX(7px);} }
+
+/* ================= HEADER ================= */
+.top { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center;
+  padding: 16px var(--pad); background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  transition: box-shadow .3s ease, padding .3s ease; }
+.top.scrolled { box-shadow: 0 10px 30px -22px rgba(19,19,18,.4); padding-top: 11px; padding-bottom: 11px; }
+.nav a.active { color: var(--blue); }
+.progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--blue); z-index: 40; pointer-events: none; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 2px; }
+.wordmark { font-weight: 700; letter-spacing: -.01em; }
+.wordmark:hover { color: var(--blue); }
+.nav { display: flex; gap: 22px; font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.nav a { color: var(--mute); transition: color .2s; }
+.nav a:hover { color: var(--blue); }
+@media (max-width: 720px) { .nav { display: none; } }
+
+/* ================= HERO ================= */
+.hero { padding: clamp(90px, 16vh, 170px) 0 0; }
+.hero-name { font-size: var(--fs-display); font-weight: 700; letter-spacing: -.035em; line-height: .98; color: var(--blue); }
+.hero-name .ln { display: block; overflow: hidden; padding-bottom: .16em; margin-bottom: -.16em; }
+.hero-name .ln > span { display: inline-block; transform: translateY(110%); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+.hero-name .ln:nth-child(2) > span { animation-delay: .12s; }
+.hero-sub { margin-top: 28px; font-size: 17px; color: var(--mute); }
+@keyframes rise { to { transform: none; } }
+
+/* ================= SECTIONS ================= */
+.section { padding: clamp(90px, 13vh, 150px) 0 0; }
+.section-head { display: flex; align-items: baseline; gap: 22px; border-top: 1px solid var(--ink); padding-top: 18px; position: relative; }
+.section-head::before { content: ""; position: absolute; top: -1px; left: 0; width: 100%; height: 1px; background: var(--blue);
+  transform: scaleX(0); transform-origin: left; transition: transform 1.1s cubic-bezier(.2,.7,.2,1) .15s; }
+.section-head.in::before { transform: scaleX(1); }
+.section-num { font-family: var(--mono); font-size: var(--fs-fine); color: var(--blue-deep); letter-spacing: .1em; }
+.section-title { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; }
+.section-lede { max-width: 720px; color: var(--mute); margin-top: 22px; font-size: 19px; }
+
+/* figures */
+.fig { margin-top: clamp(40px, 7vh, 72px); }
+.plate { overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(19,19,18,.04), 0 16px 40px -24px rgba(19,19,18,.22); }
+.plate img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.001); transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.plate:hover img { transform: scale(1.025); }
+.plate { transition: box-shadow .35s ease; }
+.plate:hover { box-shadow: 0 2px 4px rgba(19,19,18,.05), 0 22px 48px -22px rgba(19,19,18,.3); }
+/* portrait plates sit a little smaller, centred */
+.portrait .plate { max-width: min(85%, 700px); margin-inline: auto; }
+.masonry .portrait .plate { max-width: 100%; }
+.figcap { display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 18px; margin-top: 14px; }
+.figcap .meta { font-family: var(--mono); font-size: var(--fs-fine); color: var(--blue-deep); letter-spacing: .04em; }
+.figcap .cap { font-size: 15px; color: var(--mute); max-width: 720px; }
+@media (max-width: 640px) { .figcap { grid-template-columns: 1fr; gap: 6px; } }
+/* narrow figures stack the caption */
+.poster-grid .figcap, .lead3 .figcap, .masonry .figcap { grid-template-columns: 1fr; gap: 4px; }
+
+/* lead layout — one big figure, full width */
+
+/* half-row: two boards side by side */
+.half-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.5vw, 30px); }
+.half-row .fig { margin-top: 0; }
+.half-row .portrait .plate { max-width: 100%; }
+@media (max-width: 860px) { .half-row { grid-template-columns: 1fr; } }
+
+/* stack layout — full-width boards */
+
+/* grid layout — posters, asymmetric */
+.poster-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(16px, 2.5vw, 30px); margin-top: clamp(40px, 7vh, 72px); }
+.poster-grid .fig { margin-top: 0; }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-6 { grid-column: span 6; }
+@media (max-width: 860px) { .poster-grid { grid-template-columns: repeat(2, 1fr); }
+  .span-2, .span-3, .span-4, .span-6 { grid-column: span 2; } }
+
+/* lead + three */
+.lead3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.5vw, 30px); margin-top: clamp(40px, 7vh, 72px); }
+.lead3 .fig { margin-top: 0; }
+@media (max-width: 860px) { .lead3 { grid-template-columns: 1fr; } }
+
+/* masonry awards */
+.masonry { columns: 3; column-gap: clamp(16px, 2.5vw, 30px); margin-top: clamp(40px, 7vh, 72px); }
+.masonry .fig { margin: 0 0 clamp(22px, 3vw, 34px); break-inside: avoid; }
+.masonry .plate { border-radius: var(--radius-sm); }
+.masonry .cap { font-size: 13px; }
+@media (max-width: 980px) { .masonry { columns: 2; } }
+@media (max-width: 620px) { .masonry { columns: 1; } }
+
+/* lightbox — big preview on click */
+.plate img { cursor: zoom-in; }
+.lightbox { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 4vmin;
+  background: rgba(19,19,18,.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  opacity: 0; visibility: hidden; transition: opacity .28s ease, visibility .28s; }
+.lightbox.open { opacity: 1; visibility: visible; }
+.lb-fig { max-width: 92vw; }
+.lb-plate { max-width: 92vw; max-height: 86vh; border-radius: var(--radius); overflow: hidden; background: #fff;
+  box-shadow: 0 40px 120px -30px rgba(0,0,0,.5); }
+.lb-plate img { display: block; max-width: 92vw; max-height: 86vh; width: auto; height: auto; }
+.lb-cap { color: #f2f1ec; text-align: center; margin-top: 16px; font-size: 14px; max-width: 80vw; margin-inline: auto; }
+.lb-close { position: fixed; top: 20px; right: 26px; width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.25); background: rgba(250,250,247,.12); color: #fff; font-size: 18px;
+  cursor: pointer; transition: background .2s; display: grid; place-items: center; }
+.lb-close:hover { background: rgba(250,250,247,.25); }
+.lb-nav { position: fixed; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.25); background: rgba(250,250,247,.1); color: #fff; font-size: 20px;
+  cursor: pointer; transition: background .2s; display: grid; place-items: center; }
+.lb-nav:hover { background: rgba(250,250,247,.28); }
+.lb-prev { left: 22px; } .lb-next { right: 22px; }
+@media (max-width: 700px) { .lb-nav { display: none; } }
+
+/* ================= FOOTER ================= */
+.foot { margin-top: clamp(100px, 15vh, 170px); border-top: 1px solid var(--ink); padding: 40px 0 60px; }
+.foot-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 26px; }
+.foot-big { font-size: clamp(40px, 6vw, 72px); font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+.foot-links { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.foot-links a { display: flex; gap: 14px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 12px; transition: color .2s; }
+.foot-links a:hover { color: var(--blue); }
+.foot-links .k { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); min-width: 74px; }
+.foot-note { font-family: var(--mono); font-size: 11px; color: var(--mute); margin-top: 46px; }
+.to-top { display: inline-block; margin-top: 34px; font-size: 15px; color: var(--mute); border-bottom: 1px solid var(--line);
+  padding-bottom: 2px; transition: color .2s, border-color .2s; }
+.to-top:hover { color: var(--blue); border-color: var(--blue); }
+@media (max-width: 720px) { .foot-grid { grid-template-columns: 1fr; } }
+
+/* ================= ABOUT ================= */
+.about-bio { max-width: 720px; color: var(--ink); font-size: 19px; line-height: 1.6; margin-top: 26px; }
+.about-block { margin-top: clamp(44px, 7vh, 64px); }
+.about-block h3 { font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+.about-block ul { list-style: none; }
+.about-block li { font-size: 19px; line-height: 1.55; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.about-vol li { display: flex; gap: 18px; align-items: center; }
+.vlogo { width: 48px; height: 48px; object-fit: contain; border: 1px solid var(--line); border-radius: 12px;
+  background: #fff; padding: 5px; flex: none; }
+.about-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); column-gap: 32px; }
+.about-sw li { display: flex; gap: 14px; align-items: center; padding: 12px 0; }
+.sico { width: 26px; height: 26px; object-fit: contain; flex: none; }
+.btn-awards { display: inline-block; margin-top: 20px; font-size: 17px; padding: 12px 26px;
+  border: 1px solid var(--ink); border-radius: 999px; color: var(--ink);
+  cursor: pointer; transition: background .2s, color .2s; }
+.btn-awards:hover { background: var(--ink); color: var(--paper); }
+
+/* ================= REVEAL ================= *//* ================= REVEAL ================= */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+img.decoding { opacity: 0; transition: opacity .6s ease; }
+img.decoded { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
 </head>
-<body  data-manifest="manifest.e73f9909d8.json">
+<body>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
 <!-- ======= PASSWORD GATE ======= -->
@@ -38,7 +258,7 @@
   <section class="hero">
     <div class="wrap">
       <h1 class="hero-name" id="heroName"></h1>
-      <p class="hero-sub">Graphic design &amp; industrial design portfolio</p>
+      <p class="hero-sub">Graphic design &amp; industrial design</p>
     </div>
   </section>
 
@@ -56,8 +276,354 @@
   </footer>
 </main>
 
-<script src="app.js" defer></script>
+<script src="data.57017d2eea.js"></script>
+<script>/* portfolio-2026 — app.js
+   password gate -> PBKDF2 -> AES-GCM unlock -> render -> lazy image decrypt. */
+(() => {
+"use strict";
+
+const $ = (id) => document.getElementById(id);
+const b64toBytes = (b) => Uint8Array.from(atob(b), (c) => c.charCodeAt(0));
+const enc = new TextEncoder();
+const dec = new TextDecoder();
+
+// manifest name is stamped into <body data-manifest="…"> by the build;
+// asset filenames are content-addressed (hash of ciphertext) so the CDN can
+// never serve a stale version under a name the manifest references.
+const MANIFEST_URL = document.body.dataset.manifest || "manifest.json";
+
+let MANIFEST = null;
+let CONTENT = null;
+let contentKey = null;      // CryptoKey (AES-GCM)
+let failed = 0, lockedUntil = 0;
+
+/* ---------- crypto ---------- */
+async function deriveMaster(pw, saltB64, iters) {
+  const base = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey(
+    { name: "PBKDF2", salt: b64toBytes(saltB64), iterations: iters, hash: "SHA-256" },
+    base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+}
+async function gcmDecrypt(key, ivB64, data) {
+  const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64toBytes(ivB64) }, key, data);
+  return new Uint8Array(pt);
+}
+// all ciphertext lives in window.P2026 (data.<hash>.js) — zero network fetches
+function payloadBytes(name) {
+  const rec = (window.P2026 && window.P2026.files && window.P2026.files[name]) || null;
+  if (!rec) throw new Error("missing asset " + name);
+  const bin = atob(rec.b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+const fetchBytes = (url) => Promise.resolve(payloadBytes(url.split("/").pop()).buffer);
+
+/* ---------- gate ---------- */
+async function unlock(pw) {
+  const kdf = MANIFEST.kdf;
+  const mk = await deriveMaster(pw, kdf.salt, kdf.iters);
+  const check = await gcmDecrypt(mk, MANIFEST.verifier.iv, b64toBytes(MANIFEST.verifier.ct).buffer);
+  if (dec.decode(check) !== "portfolio-2026-ok") throw new Error("bad password");
+  const ckRaw = await gcmDecrypt(mk, MANIFEST.ck.iv, b64toBytes(MANIFEST.ck.ct).buffer);
+  contentKey = await crypto.subtle.importKey("raw", ckRaw, "AES-GCM", true, ["decrypt"]);
+  // keep the raw content key for reloads this session
+  let bin = ""; ckRaw.forEach((b) => (bin += String.fromCharCode(b)));
+  try { sessionStorage.setItem("p2026.ck", btoa(bin)); } catch (_) {}
+}
+
+async function bootFromSession() {
+  let b64ck = null;
+  try { b64ck = sessionStorage.getItem("p2026.ck"); } catch (_) {}
+  if (!b64ck) return false;
+  const raw = Uint8Array.from(atob(b64ck), (c) => c.charCodeAt(0));
+  try {
+    contentKey = await crypto.subtle.importKey("raw", raw, "AES-GCM", true, ["decrypt"]);
+    await loadContent();
+    return true;
+  } catch (_) { return false; }
+}
+
+async function loadContent() {
+  const cname = Object.keys(MANIFEST.files).find((f) => f.startsWith("content."));
+  const info = MANIFEST.files[cname];
+  const pt = await gcmDecrypt(contentKey, info.iv, payloadBytes(cname).buffer);
+  CONTENT = JSON.parse(dec.decode(pt));
+}
+
+/* ---------- render ---------- */
+const imgRegistry = [];   // {imgEl, file, iv, loaded}
+
+function el(html) {
+  const t = document.createElement("template");
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+
+function figHTML(f, cls) {
+  const portrait = f.h > f.w ? "portrait" : "";
+  const meta = f.meta ? `<span class="meta">${f.meta}</span>` : "";
+  const cap = f.cap ? `<div class="figcap reveal">${meta}<span class="cap">${f.cap}</span></div>` : "";
+  return `<figure class="fig ${portrait} ${cls || ""}">
+    <div class="plate" style="aspect-ratio:${f.w} / ${f.h}"><img class="decoding" data-file="${f.src}" alt=""></div>
+    ${cap}</figure>`;
+}
+
+function render() {
+  // nav
+  $("nav").innerHTML = CONTENT.sections
+    .map((s) => `<a href="#${s.id}">${s.num} ${s.short || s.title.split("—")[0].trim()}</a>`).join("");
+
+  // hero
+  $("heroName").innerHTML = CONTENT.hero.lines
+    .map((line) => `<span class="ln"><span>${line}</span></span>`).join("");
+
+  // sections
+  const host = $("sections");
+  for (const s of CONTENT.sections) {
+    const sec = el(`<section class="section section-${s.layout}" id="${s.id}"><div class="wrap">
+      <div class="section-head reveal"><span class="section-num">${s.num}</span><h2 class="section-title">${s.title}</h2></div>
+      ${s.lede ? `<p class="section-lede reveal">${s.lede}</p>` : ""}
+      <div class="section-body"></div>
+    </div></section>`);
+    const body = sec.querySelector(".section-body");
+
+    if (s.layout === "about") {
+      const a = s.about;
+      body.appendChild(el(`<p class="about-bio reveal">${a.bio}</p>`));
+      body.appendChild(el(`<div class="about-block reveal"><h3>Volunteering</h3>
+        <ul class="about-vol">${a.volunteering.map((v) =>
+          `<li>${v.icon ? `<img class="vlogo decoding" data-file="${v.icon}" alt="">` : ""}<span>${v.text}</span></li>`).join("")}</ul></div>`));
+      body.appendChild(el(`<div class="about-block reveal"><h3>Software</h3>
+        <ul class="about-sw">${a.software.map((v) =>
+          `<li><img class="sico decoding" data-file="${v.icon}" alt=""><span>${v.text}</span></li>`).join("")}</ul></div>`));
+      body.appendChild(el(`<div class="about-block reveal"><h3>Selected awards</h3>
+        <ul class="about-aw">${a.awards.map((v) => `<li>${v}</li>`).join("")}</ul>
+        <a class="btn-awards" href="#awards">${a.cta} ↓</a></div>`));
+      s.figures.forEach((f) => body.insertAdjacentHTML("beforeend", figHTML(f, "reveal")));
+    } else if (s.layout === "grid") {
+      body.className = "poster-grid";
+      s.figures.forEach((f) => body.insertAdjacentHTML("beforeend", figHTML(f, (f.span || "span-3") + " reveal")));
+    } else if (s.layout === "lead3") {
+      body.className = "";
+      const lead = el(`<div class="section-lead"></div>`);
+      lead.innerHTML = figHTML(s.figures[0]);
+      lead.querySelector(".fig").classList.add("reveal");
+      body.appendChild(lead);
+      const grid = el(`<div class="lead3"></div>`);
+      s.figures.slice(1).forEach((f) => grid.insertAdjacentHTML("beforeend", figHTML(f, "reveal")));
+      body.appendChild(grid);
+    } else if (s.layout === "masonry") {
+      body.className = "masonry";
+      s.figures.forEach((f, i) => {
+        const fig = el(figHTML(f, "reveal"));
+        fig.querySelector(".figcap").style.transitionDelay = `${(i % 3) * 90}ms`;
+        fig.querySelector(".plate").style.transitionDelay = `${(i % 3) * 90}ms`;
+        body.appendChild(fig);
+      });
+    } else { // lead / stack — consecutive "half" figures pair up on one row
+      body.className = "";
+      let halfBuf = [];
+      const flushHalf = () => {
+        if (!halfBuf.length) return;
+        const row = el(`<div class="half-row"></div>`);
+        halfBuf.forEach((f) => row.insertAdjacentHTML("beforeend", figHTML(f, "reveal")));
+        body.appendChild(row);
+        halfBuf = [];
+      };
+      for (const f of s.figures) {
+        if (f.size === "half") { halfBuf.push(f); continue; }
+        flushHalf();
+        body.insertAdjacentHTML("beforeend", figHTML(f, "reveal"));
+      }
+      flushHalf();
+    }
+    host.appendChild(sec);
+  }
+
+  // footer
+  const f = CONTENT.footer;
+  $("footLinks").innerHTML = `
+    <a href="mailto:${f.email}"><span class="k">Email</span>${f.email}</a>
+    <a href="${f.github}" target="_blank" rel="noopener"><span class="k">GitHub</span>@Xarfa</a>
+    <a href="${f.rednote}" target="_blank" rel="noopener"><span class="k">RedNote</span>改造我们的学习</a>`;
+  $("footNote").innerHTML = `${f.note} · <a class="to-top" href="#top">Back to top ↑</a>`;
+
+  // collect images — observe the .plate box (has real size pre-decrypt);
+  // small icons (no plate) are observed directly via their fixed CSS size
+  document.querySelectorAll("img[data-file]").forEach((img) => {
+    const file = img.dataset.file;                       // assets/<name>.bin
+    const meta = MANIFEST.files[file.split("/").pop()];  // keyed by .bin name
+    const reg = { img, plate: img.closest(".plate") || img, file, iv: meta.iv };
+    if (reg.plate !== img) img.addEventListener("click", () => openLightbox(reg)); // figures only
+    imgRegistry.push(reg);
+  });
+}
+
+/* ---------- lightbox ---------- */
+let lbEl = null, lbIndex = -1;
+function figureRegs() { return imgRegistry.filter((r) => r.plate !== r.img); }
+function buildLightbox() {
+  const lb = el(`<div class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lb-close" aria-label="Close">✕</button>
+    <button class="lb-nav lb-prev" aria-label="Previous">←</button>
+    <button class="lb-nav lb-next" aria-label="Next">→</button>
+    <figure class="lb-fig"><div class="lb-plate"><img alt=""></div><figcaption class="lb-cap"></figcaption></figure>
+  </div>`);
+  document.body.appendChild(lb);
+  lb.addEventListener("click", (e) => {
+    if (e.target === lb || e.target.closest(".lb-close")) closeLightbox();
+    else if (e.target.closest(".lb-prev")) stepLightbox(-1);
+    else if (e.target.closest(".lb-next")) stepLightbox(1);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!lbEl || !lbEl.classList.contains("open")) return;
+    if (e.key === "Escape") closeLightbox();
+    else if (e.key === "ArrowLeft") stepLightbox(-1);
+    else if (e.key === "ArrowRight") stepLightbox(1);
+  });
+  return lb;
+}
+function showLightboxIndex(i) {
+  const regs = figureRegs();
+  if (!regs.length) return;
+  lbIndex = ((i % regs.length) + regs.length) % regs.length;
+  const reg = regs[lbIndex];
+  if (!reg.img.src || !reg.img.src.startsWith("blob:")) decryptImage(reg); // ensure ready
+  const img = lbEl.querySelector("img");
+  img.src = reg.img.src;
+  const fig = reg.img.closest(".fig");
+  lbEl.querySelector(".lb-cap").textContent = fig ? (fig.querySelector(".cap")?.textContent || "") : "";
+}
+function openLightbox(reg) {
+  if (!reg.img.src || !reg.img.src.startsWith("blob:")) return; // not decrypted yet
+  if (!lbEl) lbEl = buildLightbox();
+  showLightboxIndex(figureRegs().indexOf(reg));
+  lbEl.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function stepLightbox(dir) { showLightboxIndex(lbIndex + dir); }
+function closeLightbox() {
+  if (!lbEl || !lbEl.classList.contains("open")) return;
+  lbEl.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* ---------- reveal + lazy decrypt (geometry-driven, no IntersectionObserver
+   — observer callbacks starve when the tab is hidden) ---------- */
+function watchReveals() {
+  const nodes = Array.from(document.querySelectorAll(".reveal"));
+  const navLinks = Array.from(document.querySelectorAll(".nav a"));
+  const secs = navLinks.map((a) => document.getElementById(a.getAttribute("href").slice(1)));
+  const topBar = document.querySelector(".top");
+  const progress = $("progress");
+  let last = 0;
+  const check = (force) => {
+    const now = Date.now();
+    if (!force && now - last < 140) return;
+    last = now;
+    const vh = window.innerHeight;
+    const y = window.scrollY;
+    // progress bar + header state + scrollspy
+    if (progress) progress.style.width = Math.min(100, (y / Math.max(1, document.body.scrollHeight - vh)) * 100) + "%";
+    if (topBar) topBar.classList.toggle("scrolled", y > 40);
+    let current = -1;
+    secs.forEach((sec, i) => { if (sec && sec.offsetTop - 140 <= y) current = i; });
+    navLinks.forEach((a, i) => a.classList.toggle("active", i === current));
+    // reveals + lazy decrypt
+    for (const n of nodes) {
+      if (n.classList.contains("in")) continue;
+      const r = n.getBoundingClientRect();
+      if (r.top < vh + 320 && r.bottom > -320) n.classList.add("in");
+    }
+    for (const reg of imgRegistry) {
+      if (reg.loading) continue;
+      const r = reg.plate.getBoundingClientRect();
+      if (r.top < vh + 700 && r.bottom > -700) decryptImage(reg);
+    }
+  };
+  check(true);
+  window.addEventListener("scroll", () => check(false), { passive: true });
+  window.addEventListener("resize", () => check(false), { passive: true });
+  setInterval(() => check(true), 900);
+}
+
+async function decryptImage(reg) {
+  reg.loading = true;
+  try {
+    const ct = await fetchBytes(reg.file);
+    const pt = await gcmDecrypt(contentKey, reg.iv, ct);
+    const url = URL.createObjectURL(new Blob([pt], { type: "image/jpeg" }));
+    reg.img.onload = () => { reg.img.classList.remove("decoding"); reg.img.classList.add("decoded"); };
+    reg.img.src = url;
+  } catch (err) {
+    console.error("decrypt failed", reg.file, err);
+  }
+}
+
+/* ---------- reveal on scroll ---------- */
+// (handled by watchReveals below — geometry-driven)
+
+/* ---------- gate wiring ---------- */
+function gateFail(msg) {
+  const card = $("gateCard");
+  $("gateError").textContent = msg;
+  card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+}
+
+async function enterSite() {
+  await loadContent();
+  render();
+  $("site").hidden = false;
+  $("gate").classList.add("open");
+  setTimeout(() => $("gate").remove(), 900);
+  watchReveals();
+}
+
+async function onSubmit(ev) {
+  ev.preventDefault();
+  const now = Date.now();
+  if (now < lockedUntil) {
+    gateFail(`Too many attempts — wait ${Math.ceil((lockedUntil - now) / 1000)}s.`);
+    return;
+  }
+  const pw = $("pw").value;
+  if (!pw) return;
+  const btn = $("pwBtn");
+  btn.disabled = true; btn.textContent = "Unlocking";
+  let unlocked = false;
+  try {
+    await unlock(pw);
+    unlocked = true;
+    await enterSite();
+  } catch (err) {
+    window.__err = String(err) + " | " + String((err && err.stack) || "");
+    failed += 1;
+    if (failed >= 5) { lockedUntil = Date.now() + 30_000; failed = 0; }
+    gateFail(unlocked
+      ? "Content mismatch — a cached old build was served. Hold Ctrl and press F5 once, then enter again."
+      : (failed >= 4 ? "Wrong password." : "Wrong password — check the invite and try again."));
+    $("pw").select();
+  } finally {
+    btn.disabled = false; btn.textContent = "Enter";
+  }
+}
+
+/* ---------- init ---------- */
+(async function init() {
+  try {
+    // the whole payload (manifest + ciphertexts) rides in data.<hash>.js
+    MANIFEST = window.P2026 && window.P2026.manifest;
+    if (!MANIFEST) throw 0;
+  } catch (err) {
+    $("gateError").textContent = "Failed to load the manifest — hold Ctrl and press F5 once.";
+    return;
+  }
+  $("gateForm").addEventListener("submit", onSubmit);
+  if (await bootFromSession()) await enterSite();
+})();
+})();
+</script>
 <noscript><p style="padding:2rem;font-family:sans-serif">This portfolio requires JavaScript to decrypt its content locally.</p></noscript>
-<script type="application/json" id="manifest-data">{"v": 1, "kdf": {"name": "PBKDF2", "hash": "SHA-256", "iters": 600000, "salt": "cG9ydGZvbGlvLTIwMjYtdjE="}, "verifier": {"iv": "1a06BrxJc5BGD8/8", "ct": "ovrPUnbGIrSbgQGlkhUnK39KKvDg4VnXz9psVJ96c1e5"}, "ck": {"iv": "0rXYxDhmhS+nWZKw", "ct": "jr0xhi0sSeaXIadOneCa5x0IPabb/V7CelIhlAM5D6FzHMaQPZNmZxx+XwKnkvxp"}, "files": {"academic-poster.5a303e7fe1.bin": {"iv": "hdnDz9Jm+bv0rLCW", "size": 532338}, "aw-3dds-2nd-camera.588dd19adf.bin": {"iv": "MmFC+gWe13YANqQi", "size": 63994}, "aw-3dds-2nd-mushroom.e6bb9eeaa9.bin": {"iv": "v3FCt6SPf1ERn02A", "size": 63284}, "aw-academy-3rd.605b48f568.bin": {"iv": "Lq/CKlkwwBvPLNXP", "size": 74146}, "aw-asce-1st.92563bd5f7.bin": {"iv": "TWN3H0oCg0nD3zoT", "size": 111650}, "aw-ayra-2nd.a7e8f6f54c.bin": {"iv": "y3xDDLq2TtIVXWwb", "size": 106540}, "aw-bauhaus-silver.311540bcdf.bin": {"iv": "v+iHpwH+QQSatDey", "size": 74638}, "aw-ckidea-merit.42569f4523.bin": {"iv": "zCmIL6tF+dd8Urrs", "size": 80338}, "aw-csda-bronze.19aec48b57.bin": {"iv": "ZlG2U8AkNdX5RVu5", "size": 82484}, "aw-csda-silver.890135b961.bin": {"iv": "H6oi7T71ghvJ3bPb", "size": 79993}, "aw-dadx-bronze.75965260e2.bin": {"iv": "yquENJ1u1xwe3Nop", "size": 74776}, "aw-dadx-silver.fb83ec76b1.bin": {"iv": "BLPZEiwox0iOPj/2", "size": 74176}, "aw-ecda-silver.0de4e5bdaa.bin": {"iv": "feB/7nRSZ4nVcrrR", "size": 135987}, "aw-epacc-silver.1403563499.bin": {"iv": "Y9r+NzvsHbartNDo", "size": 120559}, "aw-gcross-bronze.bfc3512238.bin": {"iv": "kRmYMuS4Z9ZZBdfw", "size": 145615}, "aw-hkcda-bronze-cam.dcd0125a06.bin": {"iv": "YvlJIyLWY5xBGLOS", "size": 76083}, "aw-hkcda-bronze-pen.7a63ac059d.bin": {"iv": "EYMgHzbl6/WIf4Wt", "size": 78144}, "aw-huashang-gold.9eeae7f699.bin": {"iv": "GiJSlmjig+GfIL83", "size": 163975}, "aw-huaxia-silver.03e18d05f3.bin": {"iv": "2kH7PdZcHNHTjXoa", "size": 145558}, "aw-jiangxi-3rd.367470a5dd.bin": {"iv": "//F/SG6RLvVh97nY", "size": 90739}, "aw-macao-bronze-band.71d891ed8b.bin": {"iv": "As6RIl9QwnPhypXT", "size": 64692}, "aw-macao-bronze-cam.5692982c05.bin": {"iv": "/UEY/d3/8uAcGSST", "size": 63392}, "aw-macao-merit.0c1638aaea.bin": {"iv": "mPZlinvTTLB2iPyr", "size": 57904}, "aw-ncda-1st.1867c02b64.bin": {"iv": "VPBMG+QY6llS/cUr", "size": 82186}, "aw-oda-1st.767119d212.bin": {"iv": "tBHp+J4wvMk4yGSO", "size": 98087}, "aw-sgadc-gold.b2fe960975.bin": {"iv": "w39ysYJeqEW1OQW8", "size": 83453}, "aw-terra-impact.1e14674ff8.bin": {"iv": "my2MiMIev4nq1teg", "size": 66492}, "aw-uad-2nd.308cd5d3ca.bin": {"iv": "8POqWTfVd/WxFaoA", "size": 88749}, "aw-ukda-2nd.756b940cd0.bin": {"iv": "u+WgESQ3o8HDM568", "size": 77680}, "aw-ukda-nom.61de7b96b0.bin": {"iv": "CxjhIFAZM7CxWJxy", "size": 83631}, "aw-ukiad-bronze.715627d70a.bin": {"iv": "lMn6lFmq4j2h6unB", "size": 99349}, "aw-wandong-3rd.69909aab93.bin": {"iv": "eWFY3TNTZGIFvtjk", "size": 101875}, "aw-ziyi-2nd.fd004315f6.bin": {"iv": "ykQw1DGAAOpZfoU3", "size": 139482}, "band-board-1.1f686e798d.bin": {"iv": "YHbeOM4E3H6Igwxy", "size": 449712}, "band-board-2.033d94da02.bin": {"iv": "jAYVe89qqyYpDlRX", "size": 360300}, "band-board-3.cb30875d6f.bin": {"iv": "nIEknoj494nWxyen", "size": 345700}, "ico-autocad.785ba20363.bin": {"iv": "dieqqRkpJW6LU00L", "size": 1359}, "ico-codex.a935e3851e.bin": {"iv": "s4rhfjuQbFpRy9Yh", "size": 10985}, "ico-comfyui.b847fba916.bin": {"iv": "GvrvSImaSpDKSILH", "size": 1227}, "ico-excel.5d9d8f5847.bin": {"iv": "cfQ1Ore3fusVnhCI", "size": 3346}, "ico-fusion.24f2bb99a4.bin": {"iv": "y9CFC5My7J0SZqXC", "size": 2428}, "ico-illustrator.5c8912c9ab.bin": {"iv": "JwK8oht0Lb7VBQHG", "size": 2378}, "ico-keyshot.c72d0bb832.bin": {"iv": "IrcN2WXJnKtKf78w", "size": 11895}, "ico-lightroom.2cbb3cd605.bin": {"iv": "2wWSjLjRJUNbuUXY", "size": 2177}, "ico-powerpoint.cc3dea8669.bin": {"iv": "xGb7oQQ8yLPV24q5", "size": 4173}, "ico-word.dbd6297720.bin": {"iv": "68N0ICLI9jHtEqoz", "size": 3617}, "logo-fao.ac47ae6656.bin": {"iv": "trz/I/aBo3W9Z9ww", "size": 11028}, "logo-mysynergy.291f165737.bin": {"iv": "6p8a7D7BmWpDgWGi", "size": 7788}, "logo-photoclub.0abbaac2e8.bin": {"iv": "WqF7RckUJBKonfFU", "size": 43632}, "logo-tedx.6553e07e9b.bin": {"iv": "PlEdBqUaHk6B//G4", "size": 692}, "logo-tedxnanjing.4934c39c65.bin": {"iv": "AuZqAXfxPLZMb8hD", "size": 40065}, "pen-board-if.c0bd03ea3a.bin": {"iv": "TItMEKfny/MG38xM", "size": 375645}, "pen-poster-contour.19d4f561a3.bin": {"iv": "RSNYfy+5vLHG/DfL", "size": 170793}, "pen-poster-hand.77393f5c04.bin": {"iv": "DZPOvBO7bcGS5QnP", "size": 396236}, "pen-poster-rain.fe852ec9ca.bin": {"iv": "fYgwbqx02UjM9OIz", "size": 476952}, "pen-posters-street.7c2973094b.bin": {"iv": "qROsa2AJoPDrn8yR", "size": 289050}, "poster-camera-share.3e4ba531be.bin": {"iv": "LijB2zx5GBr3kjfh", "size": 335410}, "poster-collage.e5c5be1d22.bin": {"iv": "TelXmdI/qpd7I19A", "size": 408461}, "poster-exhibition.1e9835499b.bin": {"iv": "eTTlEk7aM/pwZnfF", "size": 354844}, "poster-guide.ba5bd24fd8.bin": {"iv": "vgGo3kf3MfewYE+F", "size": 305419}, "poster-recruit.5aac5d954b.bin": {"iv": "Dw8BJCheI095mG5w", "size": 363818}, "poster-zine.53f51b231e.bin": {"iv": "l8Q893Hdqv38ZLG/", "size": 243408}, "practice-design.74f91c22e3.bin": {"iv": "JXGNlxUtpXsJyZp7", "size": 334423}, "practice-volunteer.22c0d55017.bin": {"iv": "xi/Nml6wyzhTKsBy", "size": 425928}, "content.fade166e30.bin": {"iv": "V2z7L+7WR0ht7b5u", "size": 14534}}}</script>
 </body>
 </html>
