@@ -166,6 +166,46 @@ form textarea { resize: vertical; min-height: 120px; }
 .contact-links a:hover { color: var(--accent); }
 .contact-links .k { color: var(--mute); display: inline-block; width: 84px; }
 
+/* ---------- friends ---------- */
+.friends { padding: 56px 0 120px; }
+.friend-bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 4vw, 44px);
+  padding: 36px 0;
+  border-bottom: 1px solid var(--line);
+}
+.friend-mark { flex: none; width: 60px; height: auto; }
+.friend-text { flex: 1; min-width: 0; }
+.friend-name {
+  font-size: var(--fs-text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.friend-name .arrow {
+  font-size: 0.75em;
+  color: var(--accent);
+  transition: transform 0.25s ease;
+}
+.friend-bar:hover .friend-name { color: var(--accent); }
+.friend-bar:hover .arrow { transform: translateX(10px); }
+.friend-desc {
+  display: block;
+  margin-top: 10px;
+  font-size: var(--fs-fine);
+  color: var(--mute);
+  max-width: 64ch;
+}
+.friend-meta {
+  flex: none;
+  font-size: var(--fs-fine);
+  color: var(--mute);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- footer ---------- */
 .foot {
   border-top: 1px solid var(--line);
@@ -255,4 +295,8 @@ form textarea { resize: vertical; min-height: 120px; }
   .project-bar, .contact-grid { grid-template-columns: 1fr; }
   .project-bar { padding: 40px 0; }
   .contact { padding: 72px 0 120px; }
+  .friends { padding: 40px 0 80px; }
+  .friend-bar { flex-wrap: wrap; gap: 20px; padding: 28px 0; }
+  .friend-mark { width: 44px; }
+  .friend-meta { width: 100%; }
 }
