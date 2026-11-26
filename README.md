@@ -12,7 +12,7 @@ Hand-built HTML + CSS, no framework, no build step. Deployed with GitHub Pages.
 | `wf672/index.html` | Project page — section gallery |
 | `style.css` | All styles; exactly three font sizes (display / text / fine) |
 | `favicon.svg` | The orange dot |
-| `assets/` | Images used by the pages |
+| `assets/` | Images used by the pages; `og-card.png` (1200×630) is the link-preview picture on both pages |
 
 ## Editing
 
